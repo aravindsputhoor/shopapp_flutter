@@ -65,21 +65,50 @@ class Products with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  Future<void> addProduct(Product product) {
+  // Future<void> addProduct(Product product) {
+  //   const url = 'https://flutter-update.firebaseio.com/products.json';
+  //   return http
+  //       .post(
+  //     url,
+  //     body: json.encode({
+  //       'title': product.title,
+  //       'description': product.description,
+  //       'imageUrl': product.imageUrl,
+  //       'price': product.price,
+  //       'isFavorite': product.isFavorite,
+  //     }),
+  //   )
+  //       .then((response) {
+  //     print(json.decode(response.body));
+  //     final newProduct = Product(
+  //       id: json.decode(response.body)['name'],
+  //       description: product.description,
+  //       title: product.title,
+  //       price: product.price,
+  //       imageUrl: product.imageUrl,
+  //     );
+  //     _items.add(newProduct);
+  //     notifyListeners();
+  //   }).catchError((error) {
+  //     print(error);
+  //     throw error;
+  //   });
+  // }
+
+  Future<void> addProduct(Product product) async {
     const url = 'https://flutter-update.firebaseio.com/products.json';
-    return http
-        .post(
-      url,
-      body: json.encode({
-        'title': product.title,
-        'description': product.description,
-        'imageUrl': product.imageUrl,
-        'price': product.price,
-        'isFavorite': product.isFavorite,
-      }),
-    )
-        .then((response) {
-      print(json.decode(response.body));
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({
+          'title': product.title,
+          'description': product.description,
+          'imageUrl': product.imageUrl,
+          'price': product.price,
+          'isFavorite': product.isFavorite,
+        }),
+      );
+
       final newProduct = Product(
         id: json.decode(response.body)['name'],
         description: product.description,
@@ -89,10 +118,11 @@ class Products with ChangeNotifier {
       );
       _items.add(newProduct);
       notifyListeners();
-    }).catchError((error) {
+    } catch (error) {
       print(error);
       throw error;
-    });
+    }
+    //print(json.decode(response.body));
   }
 
   void updateProduct(String id, Product newProduct) {
