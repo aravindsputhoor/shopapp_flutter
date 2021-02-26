@@ -1,6 +1,8 @@
+import 'package:MyShop/providers/auth.dart';
 import 'package:MyShop/providers/cart.dart';
 import 'package:MyShop/providers/orders.dart';
 import 'package:MyShop/providers/products.dart';
+import 'package:MyShop/screens/auth_screen.dart';
 import 'package:MyShop/screens/edit_product_screen.dart';
 import 'package:MyShop/screens/orders_screen.dart';
 import 'package:MyShop/screens/product_detail_screen.dart';
@@ -19,6 +21,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (ctx) => Auth(),
+        ),
+        ChangeNotifierProvider(
           create: (ctx) => Products(),
         ),
         ChangeNotifierProvider(
@@ -34,6 +39,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
           accentColor: Colors.orange,
         ),
+        // home: AuthScreen(),
         home: ProductsOverviewScreen(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
